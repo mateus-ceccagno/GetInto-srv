@@ -1,6 +1,6 @@
-﻿namespace GetInto.Domain
+﻿namespace GetInto.Application.Dtos
 {
-    public class Job
+    public class JobDto
     {
         public long Id { get; set; }
         public string Name { get; set; }
@@ -8,6 +8,6 @@
         public DateTime? StartDate { get; set; }
         public int Amount { get; set; }
         public long ProjectId { get; set; }
-        public Project Project { get; set; }
+        public ProjectDto Project { get; set; }
     }
 }
