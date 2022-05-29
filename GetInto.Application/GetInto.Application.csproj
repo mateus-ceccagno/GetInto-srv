@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GetInto.Domain\GetInto.Domain.csproj" />
+    <ProjectReference Include="..\GetInto.Persistence\GetInto.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
