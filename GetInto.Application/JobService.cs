@@ -9,11 +9,11 @@ namespace GetInto.Application
     public class JobService : IJobService
     {
         private readonly IGeralPersist _geralPersist;
-        private readonly IJobService _jobService;
+        private readonly IJobPersist _jobPersist;
         private readonly IMapper _mapper;
-        public JobService(IJobService jobService, IMapper mapper, IGeralPersist geralPersist)
+        public JobService(IJobPersist jobPersist, IMapper mapper, IGeralPersist geralPersist)
         {
-            _jobService = jobService;
+            _jobPersist = jobPersist;
             _mapper = mapper;
             _geralPersist = geralPersist;
         }
@@ -35,11 +35,11 @@ namespace GetInto.Application
             }
         }
 
-        public async Task<JobDto[]> SaveJob(long projectId, JobDto[] models)
+        public async Task<JobDto[]> SaveJobs(long projectId, JobDto[] models)
         {
             try
             {
-                var jobs = await _jobService.GetJobsByProjectIdAsync(projectId);
+                var jobs = await _jobPersist.GetJobsByProjectIdAsync(projectId);
                 if (jobs == null) return null;
 
                 foreach (var model in models)
@@ -57,7 +57,7 @@ namespace GetInto.Application
                         await _geralPersist.SaveChangesAsync();
                     }
                 }
-                var jobReturn = await _jobService.GetJobsByProjectIdAsync(projectId);
+                var jobReturn = await _jobPersist.GetJobsByProjectIdAsync(projectId);
                 return _mapper.Map<JobDto[]>(jobReturn);
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace GetInto.Application
         {
             try
             {
-                var job = await _jobService.GetJobByIdsAsync(projectId, jobId);
+                var job = await _jobPersist.GetJobByIdsAsync(projectId, jobId);
                 if (job == null) throw new Exception("Job not found.");
 
                 _geralPersist.Delete(job);
@@ -86,7 +86,7 @@ namespace GetInto.Application
         {
             try
             {
-                var job = await _jobService.GetJobByIdsAsync(projectId, jobId);
+                var job = await _jobPersist.GetJobByIdsAsync(projectId, jobId);
                 if (job == null) return null;
 
                 var result = _mapper.Map<JobDto>(job);
@@ -102,7 +102,7 @@ namespace GetInto.Application
         {
             try
             {
-                var jobs = await _jobService.GetJobsByProjectIdAsync(projectId);
+                var jobs = await _jobPersist.GetJobsByProjectIdAsync(projectId);
                 if (jobs == null) return null;
 
                 var result = _mapper.Map<JobDto[]>(jobs);
@@ -113,6 +113,6 @@ namespace GetInto.Application
                 throw new Exception(ex.Message);
             }
         }
-   
+
     }
 }

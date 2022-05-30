@@ -4,7 +4,7 @@ namespace GetInto.Application.Contracts
 {
     public interface IJobService
     {
-        Task<JobDto[]> SaveJob(long projectId, JobDto[] models);
+        Task<JobDto[]> SaveJobs(long projectId, JobDto[] models);
         Task<bool> DeleteJob(long projectId, long jobId);
 
         Task<JobDto[]> GetJobsByProjectIdAsync(long projectId);

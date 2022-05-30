@@ -12,6 +12,14 @@ namespace GetInto.Application
         private readonly IGeralPersist _geralPersist;
         private readonly IProjectPersist _projectPersist;
         private readonly IMapper _mapper;
+
+        public ProjectService(IGeralPersist geralPersist, IProjectPersist projectPersist, IMapper mapper)
+        {
+            _geralPersist=geralPersist;
+            _projectPersist=projectPersist;
+            _mapper=mapper;
+        }
+
         public async Task<ProjectDto> AddProject(ProjectDto model)
         {
             try

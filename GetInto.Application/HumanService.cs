@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GetInto.Application.Contracts;
 using GetInto.Application.Dtos;
+using GetInto.Domain;
 using GetInto.Persistence.Contracts;
 using GetInto.Persistence.Pagination;
 
@@ -11,14 +12,29 @@ namespace GetInto.Application
         private readonly IHumanPersist _humanPersist;
         private readonly IMapper _mapper;
 
-        public HumanService(IHumanPersist humanPersist)
+        public HumanService(IHumanPersist humanPersist, IMapper mapper)
         {
             _humanPersist = humanPersist;
+            _mapper = mapper;
         }
 
-        public Task<HumanDto> AddHuman(HumanAddDto model)
+        public async Task<HumanDto> AddHuman(HumanAddDto model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var human = _mapper.Map<Human>(model);
+                _humanPersist.Add(human);
+                if (await _humanPersist.SaveChangesAsync())
+                {
+                    var result = await _humanPersist.GetHumanByUserIdAsync(human.Id);
+                    return _mapper.Map<HumanDto>(result);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<PageList<HumanDto>> GetAllHumansAsync(PageParams pageParams)
@@ -61,9 +77,27 @@ namespace GetInto.Application
             }
         }
 
-        public Task<HumanDto> UpdateHuman(HumanUpdateDto model)
+        public async Task<HumanDto> UpdateHuman(long id, HumanUpdateDto model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var human = _humanPersist.GetHumanByUserIdAsync(id);
+                if (human == null) return null;
+
+                model.Id = human.Id;
+
+                _mapper.Map<Human>(model);
+                if (await _humanPersist.SaveChangesAsync())
+                {
+                    var result = await _humanPersist.GetHumanByUserIdAsync(id);
+                    return _mapper.Map<HumanDto>(result);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

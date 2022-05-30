@@ -18,6 +18,9 @@ namespace GetInto.Persistence.Context
 
             modelBuilder.Entity<HumanProject>()
                 .HasKey(HP => new { HP.ProjectId, HP.HumanId });
+
+            modelBuilder.Entity<Human>();
+            modelBuilder.Entity<Project>();
         }
     }
 }
