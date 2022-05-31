@@ -6,17 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GetInto.Persistence
 {
-    public class ProjectPersist : IProjectPersist
+    public class ProjectPersist : GeralPersist, IProjectPersist
     {
         private readonly GetIntoContext _context;
-        public ProjectPersist(GetIntoContext context)
+        public ProjectPersist(GetIntoContext context) : base(context)
         {
             _context = context;
         }
         public async Task<PageList<Project>> GetAllProjectsAsync(PageParams pageParams)
         {
             IQueryable<Project> query = _context.Projects
-                .Include(e => e.Jobs);
+                .Include(p => p.Jobs)
+                .Include(p => p.SocialLinks);
 
             query = query.AsNoTracking()
                          .Where(p => p.Title.ToLower().Contains(pageParams.Term.ToLower()) ||

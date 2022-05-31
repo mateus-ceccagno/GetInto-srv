@@ -16,7 +16,8 @@ namespace GetInto.Persistence
 
         public async Task<PageList<Human>> GetAllHumansAsync(PageParams pageParams)
         {
-            IQueryable<Human> query = _context.Humans;
+            IQueryable<Human> query = _context.Humans
+                .Include(h => h.SocialLinks);
 
             query = query.AsNoTracking()
                          .Where(h => h.MiniCurriculum.ToLower().Contains(pageParams.Term.ToLower()))

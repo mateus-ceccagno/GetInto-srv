@@ -13,6 +13,7 @@ namespace GetInto.Application.Helpers
             CreateMap<Human, HumanDto>().ReverseMap();
             CreateMap<Human, HumanAddDto>().ReverseMap();
             CreateMap<Human, HumanUpdateDto>().ReverseMap();
+            CreateMap<SocialLink, SocialLinkDto>().ReverseMap();
         }
     }
 }

@@ -3,7 +3,7 @@ using GetInto.Persistence.Pagination;
 
 namespace GetInto.Persistence.Contracts
 {
-    public interface IProjectPersist
+    public interface IProjectPersist : IGeralPersist
     {
         // TODO: Add bool param 'includeHuman' in both
         Task<PageList<Project>> GetAllProjectsAsync(PageParams pageParams);

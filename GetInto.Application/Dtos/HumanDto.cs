@@ -5,8 +5,8 @@
         public long Id { get; set; }
         public string MiniCurriculum { get; set; }
         public IEnumerable<ProjectDto> Projects { get; set; }
-
-        // TODO: Social Media for Human
+        public IEnumerable<SocialLinkDto> SocialLinks { get; set; }
+        
         // TODO: User
     }
 }

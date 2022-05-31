@@ -25,8 +25,8 @@ namespace GetInto.Application
             try
             {
                 var project = _mapper.Map<Project>(model);
-                
-                _geralPersist.Add(project);
+
+                _projectPersist.Add(project);
                 if(await _geralPersist.SaveChangesAsync())
                 {
                     var projectReturn = await _projectPersist.GetProjectByIdAsync(project.Id);
@@ -63,15 +63,15 @@ namespace GetInto.Application
         {
             try
             {
-                var projects = _projectPersist.GetAllProjectsAsync(pageParams);
+                var projects = await _projectPersist.GetAllProjectsAsync(pageParams);
                 if (projects == null) return null;
 
                 var result = _mapper.Map<PageList<ProjectDto>>(projects);
-
-                result.CurrentPage = projects.Result.CurrentPage;
-                result.TotalPages = projects.Result.TotalPages;
-                result.PageSize = projects.Result.PageSize;
-                result.TotalCount = projects.Result.TotalCount;
+                
+                result.CurrentPage = projects.CurrentPage;
+                result.TotalPages = projects.TotalPages;
+                result.PageSize = projects.PageSize;
+                result.TotalCount = projects.TotalCount;
                 
                 return result;
             }

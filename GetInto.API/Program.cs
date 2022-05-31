@@ -29,11 +29,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IHumanService, HumanService>();
+builder.Services.AddScoped<ISocialLinkService, SocialLinkService>();
 
 builder.Services.AddScoped<IGeralPersist, GeralPersist>();
 builder.Services.AddScoped<IProjectPersist, ProjectPersist>();
 builder.Services.AddScoped<IJobPersist, JobPersist>();
 builder.Services.AddScoped<IHumanPersist, HumanPersist>();
+builder.Services.AddScoped<ISocialLinkPersist, SocialLinkPersist>();
 
 builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

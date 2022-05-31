@@ -10,8 +10,7 @@
         public string Phone { get; set; }
         public string Email { get; set; }
         public IEnumerable<Job> Jobs { get; set; }
-        public IEnumerable<HumanProject> PalestrantesEventos { get; set; }
-        
-        // TODO: SocialMedia for Project
+        public IEnumerable<SocialLink> SocialLinks { get; set; }
+        public IEnumerable<HumanProject> HumansProjects { get; set; }
     }
 }
