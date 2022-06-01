@@ -23,7 +23,7 @@ namespace GetInto.API.Controllers
         {
             try
             {
-                var projects = await _projectService.GetAllProjectsAsync(pageParams);
+                var projects = await _projectService.GetAllProjectsAsync(pageParams, true);
                 if (projects == null) return NoContent();
 
                 Response.AddPagination(projects.CurrentPage, projects.PageSize, projects.TotalCount, projects.TotalPages);
@@ -42,7 +42,7 @@ namespace GetInto.API.Controllers
         {
             try
             {
-                var project = await _projectService.GetProjectByIdAsync(id);
+                var project = await _projectService.GetProjectByIdAsync(id, true);
                 if (project == null) return NoContent();
 
                 return Ok(project);
@@ -87,8 +87,8 @@ namespace GetInto.API.Controllers
                     $"Error when trying to update project. Error: {ex.Message}");
             }
         }
-
-        [HttpDelete("{id}")]
+        
+         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             try

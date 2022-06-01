@@ -29,7 +29,7 @@ namespace GetInto.Application
                 _projectPersist.Add(project);
                 if(await _geralPersist.SaveChangesAsync())
                 {
-                    var projectReturn = await _projectPersist.GetProjectByIdAsync(project.Id);
+                    var projectReturn = await _projectPersist.GetProjectByIdAsync(project.Id, false);
                     return _mapper.Map<ProjectDto>(projectReturn);
                 }
 
@@ -45,7 +45,7 @@ namespace GetInto.Application
         {
             try
             {
-                var project = await _projectPersist.GetProjectByIdAsync(projectId);
+                var project = await _projectPersist.GetProjectByIdAsync(projectId, false);
 
                 if (project == null) throw new Exception("Project not found.");
 
@@ -59,11 +59,11 @@ namespace GetInto.Application
             }
         }
 
-        public async Task<PageList<ProjectDto>> GetAllProjectsAsync(PageParams pageParams)
+        public async Task<PageList<ProjectDto>> GetAllProjectsAsync(PageParams pageParams, bool includeHumans = false)
         {
             try
             {
-                var projects = await _projectPersist.GetAllProjectsAsync(pageParams);
+                var projects = await _projectPersist.GetAllProjectsAsync(pageParams, includeHumans);
                 if (projects == null) return null;
 
                 var result = _mapper.Map<PageList<ProjectDto>>(projects);
@@ -77,17 +77,16 @@ namespace GetInto.Application
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
             
         }
 
-        public async Task<ProjectDto> GetProjectByIdAsync(long projectId)
+        public async Task<ProjectDto> GetProjectByIdAsync(long projectId, bool includeHumans = false)
         {
             try
             {
-                var project = await _projectPersist.GetProjectByIdAsync(projectId);
+                var project = await _projectPersist.GetProjectByIdAsync(projectId, includeHumans);
                 if (project == null) return null;
 
                 var result = _mapper.Map<ProjectDto>(project);
@@ -99,9 +98,30 @@ namespace GetInto.Application
             }
         }
 
-        public Task<ProjectDto> UpdateProject(long projectId, ProjectDto model)
+        public async Task<ProjectDto> UpdateProject(long projectId, ProjectDto model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var project = await _projectPersist.GetProjectByIdAsync(projectId, false);
+                if (project == null) return null;
+
+                model.Id = project.Id;
+
+                _mapper.Map(model, project);
+
+                _projectPersist.Update(project);
+                if(await _projectPersist.SaveChangesAsync())
+                {
+                    var result = await _projectPersist.GetProjectByIdAsync(project.Id, false);
+                    return _mapper.Map<ProjectDto>(result);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

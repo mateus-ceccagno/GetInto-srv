@@ -14,10 +14,17 @@ namespace GetInto.Persistence
             _context = context;
         }
 
-        public async Task<PageList<Human>> GetAllHumansAsync(PageParams pageParams)
+        public async Task<PageList<Human>> GetAllHumansAsync(PageParams pageParams, bool includeProjects)
         {
             IQueryable<Human> query = _context.Humans
                 .Include(h => h.SocialLinks);
+
+            if(includeProjects)
+            {
+                query = query
+                    .Include(h => h.HumansProjects)
+                    .ThenInclude(hp => hp.Project);
+            }
 
             query = query.AsNoTracking()
                          .Where(h => h.MiniCurriculum.ToLower().Contains(pageParams.Term.ToLower()))
@@ -26,9 +33,16 @@ namespace GetInto.Persistence
             return await PageList<Human>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
-        public async Task<Human> GetHumanByUserIdAsync(long id)
+        public async Task<Human> GetHumanByUserIdAsync(long id, bool includeProjects)
         {
             IQueryable<Human> query = _context.Humans;
+
+            if (includeProjects)
+            {
+                query = query
+                    .Include(h => h.HumansProjects)
+                    .ThenInclude(hp => hp.Project);
+            }
 
             query = query.AsNoTracking()
                          .Where(h => h.Id == id);

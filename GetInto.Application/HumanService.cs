@@ -26,7 +26,7 @@ namespace GetInto.Application
                 _humanPersist.Add(human);
                 if (await _humanPersist.SaveChangesAsync())
                 {
-                    var result = await _humanPersist.GetHumanByUserIdAsync(human.Id);
+                    var result = await _humanPersist.GetHumanByUserIdAsync(human.Id, false);
                     return _mapper.Map<HumanDto>(result);
                 }
                 return null;
@@ -37,11 +37,11 @@ namespace GetInto.Application
             }
         }
 
-        public async Task<PageList<HumanDto>> GetAllHumansAsync(PageParams pageParams)
+        public async Task<PageList<HumanDto>> GetAllHumansAsync(PageParams pageParams, bool includeProjects = false)
         {
             try
             {
-                var humans = await _humanPersist.GetAllHumansAsync(pageParams);
+                var humans = await _humanPersist.GetAllHumansAsync(pageParams, includeProjects);
                 if (humans == null) return null;
 
                 var result = _mapper.Map<PageList<HumanDto>>(humans);
@@ -60,11 +60,11 @@ namespace GetInto.Application
             
         }
 
-        public async Task<HumanDto> GetHumanByIdAsync(long id)
+        public async Task<HumanDto> GetHumanByIdAsync(long id, bool includeProjects = false)
         {
             try
             {
-                var human = await _humanPersist.GetHumanByUserIdAsync(id);
+                var human = await _humanPersist.GetHumanByUserIdAsync(id, includeProjects);
                 if (human == null) return null;
 
                 var result = _mapper.Map<HumanDto>(human);

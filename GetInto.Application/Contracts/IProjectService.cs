@@ -9,7 +9,7 @@ namespace GetInto.Application.Contracts
         Task<ProjectDto> UpdateProject(long projectId, ProjectDto model);
         Task<bool> DeleteProject(long projectId);
 
-        Task<PageList<ProjectDto>> GetAllProjectsAsync(PageParams pageParams);
-        Task<ProjectDto> GetProjectByIdAsync(long projectId);
+        Task<PageList<ProjectDto>> GetAllProjectsAsync(PageParams pageParams, bool includeHumans = false);
+        Task<ProjectDto> GetProjectByIdAsync(long projectId, bool includeHumans = false);
     }
 }

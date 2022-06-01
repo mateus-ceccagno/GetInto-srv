@@ -22,7 +22,7 @@ namespace GetInto.API.Controllers
         {
             try
             {
-                var projects = await _humanService.GetAllHumansAsync(pageParams);
+                var projects = await _humanService.GetAllHumansAsync(pageParams, true);
                 if (projects == null) return NoContent();
 
                 Response.AddPagination(projects.CurrentPage, projects.PageSize, projects.TotalCount, projects.TotalPages);

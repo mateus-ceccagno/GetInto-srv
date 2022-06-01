@@ -5,8 +5,7 @@ namespace GetInto.Persistence.Contracts
 {
     public interface IProjectPersist : IGeralPersist
     {
-        // TODO: Add bool param 'includeHuman' in both
-        Task<PageList<Project>> GetAllProjectsAsync(PageParams pageParams);
-        Task<Project> GetProjectByIdAsync(long projectId);
+        Task<PageList<Project>> GetAllProjectsAsync(PageParams pageParams, bool includeHumans = false);
+        Task<Project> GetProjectByIdAsync(long projectId, bool includeHumans = false);
     }
 }
