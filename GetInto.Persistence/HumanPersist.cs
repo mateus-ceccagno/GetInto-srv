@@ -17,6 +17,7 @@ namespace GetInto.Persistence
         public async Task<PageList<Human>> GetAllHumansAsync(PageParams pageParams, bool includeProjects)
         {
             IQueryable<Human> query = _context.Humans
+                .Include(h => h.User)
                 .Include(h => h.SocialLinks);
 
             if(includeProjects)
@@ -33,9 +34,11 @@ namespace GetInto.Persistence
             return await PageList<Human>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
-        public async Task<Human> GetHumanByUserIdAsync(long id, bool includeProjects)
+        public async Task<Human> GetHumanByUserIdAsync(long userId, bool includeProjects)
         {
-            IQueryable<Human> query = _context.Humans;
+            IQueryable<Human> query = _context.Humans
+                .Include(h => h.User)
+                .Include(h => h.SocialLinks);
 
             if (includeProjects)
             {
@@ -45,7 +48,7 @@ namespace GetInto.Persistence
             }
 
             query = query.AsNoTracking()
-                         .Where(h => h.Id == id);
+                         .Where(h => h.UserId == userId);
 
             return await query.FirstOrDefaultAsync();
 
