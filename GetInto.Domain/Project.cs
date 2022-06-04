@@ -1,4 +1,6 @@
-﻿namespace GetInto.Domain
+﻿using GetInto.Domain.Identity;
+
+namespace GetInto.Domain
 {
     public class Project
     {
@@ -9,6 +11,8 @@
         public string ImageURL { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public long UserId { get; set; }
+        public User User { get; set; }
         public IEnumerable<Job> Jobs { get; set; }
         public IEnumerable<SocialLink> SocialLinks { get; set; }
         public IEnumerable<HumanProject> HumansProjects { get; set; }
