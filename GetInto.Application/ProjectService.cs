@@ -20,11 +20,12 @@ namespace GetInto.Application
             _mapper=mapper;
         }
 
-        public async Task<ProjectDto> AddProject(ProjectDto model)
+        public async Task<ProjectDto> AddProject(long userId, ProjectDto model)
         {
             try
             {
                 var project = _mapper.Map<Project>(model);
+                project.UserId = userId;
 
                 _projectPersist.Add(project);
                 if(await _geralPersist.SaveChangesAsync())
@@ -98,7 +99,7 @@ namespace GetInto.Application
             }
         }
 
-        public async Task<ProjectDto> UpdateProject(long projectId, ProjectDto model)
+        public async Task<ProjectDto> UpdateProject(long userId, long projectId, ProjectDto model)
         {
             try
             {
@@ -106,6 +107,7 @@ namespace GetInto.Application
                 if (project == null) return null;
 
                 model.Id = project.Id;
+                model.UserId = userId;
 
                 _mapper.Map(model, project);
 

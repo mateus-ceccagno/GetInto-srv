@@ -5,6 +5,8 @@ namespace GetInto.Application.Dtos
     public class ProjectDto
     {
         public long Id { get; set; }
+        public long UserId { get; set; }
+        public UserDto UserDto { get; set; }
         public string Location { get; set; }
         public string StartDate { get; set; }
 

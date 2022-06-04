@@ -18,17 +18,20 @@ namespace GetInto.Application
             _mapper = mapper;
         }
 
-        public async Task<HumanDto> AddHuman(HumanAddDto model)
+        public async Task<HumanDto> AddHuman(long userId, HumanAddDto model)
         {
             try
             {
                 var human = _mapper.Map<Human>(model);
+                human.UserId = userId;
+
                 _humanPersist.Add(human);
                 if (await _humanPersist.SaveChangesAsync())
                 {
-                    var result = await _humanPersist.GetHumanByUserIdAsync(human.Id, false);
+                    var result = await _humanPersist.GetHumanByUserIdAsync(userId, false);
                     return _mapper.Map<HumanDto>(result);
                 }
+
                 return null;
             }
             catch (Exception ex)
@@ -60,11 +63,11 @@ namespace GetInto.Application
             
         }
 
-        public async Task<HumanDto> GetHumanByIdAsync(long id, bool includeProjects = false)
+        public async Task<HumanDto> GetHumanByUserIdAsync(long userId, bool includeProjects = false)
         {
             try
             {
-                var human = await _humanPersist.GetHumanByUserIdAsync(id, includeProjects);
+                var human = await _humanPersist.GetHumanByUserIdAsync(userId, includeProjects);
                 if (human == null) return null;
 
                 var result = _mapper.Map<HumanDto>(human);
@@ -77,19 +80,20 @@ namespace GetInto.Application
             }
         }
 
-        public async Task<HumanDto> UpdateHuman(long id, HumanUpdateDto model)
+        public async Task<HumanDto> UpdateHuman(long userId, HumanUpdateDto model)
         {
             try
             {
-                var human = _humanPersist.GetHumanByUserIdAsync(id);
+                var human = await _humanPersist.GetHumanByUserIdAsync(userId);
                 if (human == null) return null;
 
                 model.Id = human.Id;
+                model.UserId = userId;
 
                 _mapper.Map<Human>(model);
                 if (await _humanPersist.SaveChangesAsync())
                 {
-                    var result = await _humanPersist.GetHumanByUserIdAsync(id);
+                    var result = await _humanPersist.GetHumanByUserIdAsync(userId);
                     return _mapper.Map<HumanDto>(result);
                 }
                 return null;
