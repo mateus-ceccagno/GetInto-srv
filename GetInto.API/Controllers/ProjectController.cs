@@ -59,7 +59,7 @@ namespace GetInto.API.Controllers
         {
             try
             {
-                var project = await _projectService.AddProject(model);
+                var project = await _projectService.AddProject(User.GetUserId(), model);
                 if (project == null) return NoContent();
 
                 return Ok(project);
@@ -76,7 +76,7 @@ namespace GetInto.API.Controllers
         {
             try
             {
-                var project = await _projectService.UpdateProject(id, model);
+                var project = await _projectService.UpdateProject(User.GetUserId(), id, model);
                 if (project == null) return NoContent();
 
                 return Ok(project);

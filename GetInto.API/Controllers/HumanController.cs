@@ -11,10 +11,16 @@ namespace GetInto.API.Controllers
     public class HumanController : ControllerBase
     {
         private readonly IHumanService _humanService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IAccountService _accountService;
 
-        public HumanController(IHumanService humanService)
-        {
+        public HumanController(IHumanService humanService,
+                               IWebHostEnvironment webHostEnvironment,
+                               IAccountService accountService)
+        {   
             _humanService=humanService;
+            _webHostEnvironment=webHostEnvironment;
+            _accountService=accountService;
         }
 
         [HttpGet("all")]
@@ -36,16 +42,18 @@ namespace GetInto.API.Controllers
             }
         }
 
-        // TODO: Get User Applicant, when User ok
-
         [HttpPost]
         public async Task<IActionResult> Post(HumanAddDto model)
         {
             try
             {
-                var human = await _humanService.AddHuman(model);
-                if (human == null) return NoContent();
-
+                //  'User' comes from ControllerBase
+                //  'GetUserId()' comes from the created class: ClaimsPrincipalExtensions
+                var human = await _humanService.GetHumanByUserIdAsync(User.GetUserId(), true);
+                
+                if (human == null)
+                    human = await _humanService.AddHuman(User.GetUserId(), model);
+                
                 return Ok(human);
             }
             catch (Exception ex)
@@ -55,12 +63,12 @@ namespace GetInto.API.Controllers
             }
         }
 
-        [HttpPut("{applicantId}")]
-        public async Task<IActionResult> Put(long applicantdId, HumanUpdateDto model)
+        [HttpPut]
+        public async Task<IActionResult> Put(HumanUpdateDto model)
         {
             try
             {
-                var human = await _humanService.UpdateHuman(applicantdId, model);
+                var human = await _humanService.UpdateHuman(User.GetUserId(), model);
                 if (human == null) return NoContent();
 
                 return Ok(human);
