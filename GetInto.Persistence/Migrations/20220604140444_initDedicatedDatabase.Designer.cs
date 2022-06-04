@@ -4,6 +4,7 @@ using GetInto.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GetInto.Persistence.Migrations
 {
     [DbContext(typeof(GetIntoContext))]
-    partial class GetIntoContextModelSnapshot : ModelSnapshot
+    [Migration("20220604140444_initDedicatedDatabase")]
+    partial class initDedicatedDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
