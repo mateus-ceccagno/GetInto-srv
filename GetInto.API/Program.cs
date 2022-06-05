@@ -1,3 +1,4 @@
+using GetInto.API.Helpers;
 using GetInto.Application;
 using GetInto.Application.Contracts;
 using GetInto.Domain.Identity;
@@ -65,6 +66,7 @@ builder.Services.AddScoped<IHumanService, HumanService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISocialLinkService, SocialLinkService>();
+builder.Services.AddScoped<IUtilImage, UtilImage>();
 
 builder.Services.AddScoped<IGeralPersist, GeralPersist>();
 builder.Services.AddScoped<IProjectPersist, ProjectPersist>();

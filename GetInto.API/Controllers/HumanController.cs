@@ -11,16 +11,10 @@ namespace GetInto.API.Controllers
     public class HumanController : ControllerBase
     {
         private readonly IHumanService _humanService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IAccountService _accountService;
 
-        public HumanController(IHumanService humanService,
-                               IWebHostEnvironment webHostEnvironment,
-                               IAccountService accountService)
+        public HumanController(IHumanService humanService)
         {   
             _humanService=humanService;
-            _webHostEnvironment=webHostEnvironment;
-            _accountService=accountService;
         }
 
         [HttpGet("all")]

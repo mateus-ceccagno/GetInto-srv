@@ -1,4 +1,5 @@
 ﻿using GetInto.API.Extensions;
+using GetInto.API.Helpers;
 using GetInto.Application.Contracts;
 using GetInto.Application.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -12,11 +13,14 @@ namespace GetInto.API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
+        private readonly IUtilImage _utilImage;
+        private readonly string _address = "Assets";
 
-        public AccountController(IAccountService accountService, ITokenService tokenService)
+        public AccountController(IAccountService accountService, ITokenService tokenService, IUtilImage utilImage)
         {
             _accountService = accountService;
-            _tokenService=tokenService;
+            _tokenService = tokenService;
+            _utilImage = utilImage;
         }
 
         [HttpGet("GetUser")]
@@ -116,5 +120,29 @@ namespace GetInto.API.Controllers
             }
         }
 
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+                if (user == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _utilImage.DeleteImage(user.ImageURL, _address);
+                    user.ImageURL = await _utilImage.SaveImage(file, _address);
+                }
+                var userRetorno = await _accountService.UpdateAccount(user);
+
+                return Ok(userRetorno);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error when trying to upload User Image. Error: {ex.Message}");
+            }
+        }
     }
 }
