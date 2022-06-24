@@ -1,12 +1,8 @@
 # GetInto Software
 Software para alocação de pessoas aos projetos internos de uma empresa.
 
-<br>
-
 ## Motivação
 O software surge para que administradores cadastrem novos projetos e vagas. Outros colaboradores poderão demonstrar interesse nas vagas disponíveis.
-
-<br>
 
 ## Características
 #### Ferramentas
